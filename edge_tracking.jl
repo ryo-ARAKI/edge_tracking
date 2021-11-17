@@ -80,7 +80,7 @@ function main()
 
     # Set list of initial condition for x and y
     ic_x_list = [-3.0:3.0:18.0;]
-    ic_y_list = [-3.0; 0.99; 1.01;]
+    ic_y_list = [-3.0; 0.99; 1.01]
     # Set time range to compute
     t_span = (0.0, 50.0)
 
