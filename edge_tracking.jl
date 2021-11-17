@@ -133,6 +133,20 @@ function main()
         )
     end
 
+    # Plot the edge and varuous status of the model
+    ax.axhline(  # The edge line
+        y = 1.0,
+        color = "Gold",
+        zorder = 2
+    )
+    state_x = [0.0; 10.0; 14.0]  # The laminar, edge, and turbulent states
+    state_y = [0.0; 1.0; 1.4]
+    ax.scatter(
+        state_x, state_y,
+        color = "red",
+        zorder = 3
+    )
+
     # Save figure
     filename_figure = "result/" * "2dsystem.png"
     savefig(filename_figure)
