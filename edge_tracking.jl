@@ -49,6 +49,14 @@ function main()
     # Set time range to compute
     t_span = (0.0, 1000.0)
 
+    # Prepare result/ directory if not present
+    try
+        mkdir("result")
+        println("Create ", pwd(), "/result/ to save result.\n")
+    catch
+        println(pwd(), "/result/ directory already exists.\n")
+    end
+
     # Stdout problem information
     println(
         "Solve:
