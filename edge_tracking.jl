@@ -82,7 +82,7 @@ function main()
     ic_x_list = [-3.0:3.0:18.0;]
     ic_y_list = [-3.0; 0.99; 1.01;]
     # Set time range to compute
-    t_span = (0.0, 100.0)
+    t_span = (0.0, 50.0)
 
     # Prepare result/ directory if not present
     try
@@ -114,7 +114,7 @@ function main()
 
         # Solve the problem
         arg = RK4()
-        sol = solve(prob, arg, adaptive = false, dt = 0.01)
+        sol = solve(prob, arg, adaptive = false, dt = 0.002)
 
         # Save result of the problem
         filename = "2dsystem_" * filename_parameter
