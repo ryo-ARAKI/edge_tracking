@@ -79,10 +79,8 @@ using .Output: save_timeseries
 function main()
 
     # Set list of initial condition for x and y
-    init_cond_list = [
-        5.0 1.0;  # x
-        5.0 2.0   # y
-    ]
+    ic_x_list = [-3.0:3.0:18.0;]
+    ic_y_list = [-3.0; 0.99; 1.01;]
     # Set time range to compute
     t_span = (0.0, 100.0)
 
@@ -103,10 +101,10 @@ function main()
     println("Time range: ", t_span)
 
     # Iteration over initial condition
-    for itr = 1:length(init_cond_list[1, :])
+    for ic_x in ic_x_list, ic_y in ic_y_list
 
         # Set initial condition
-        init_cond = init_cond_list[:, itr]
+        init_cond = [ic_x; ic_y]
 
         # Set up strings
         filename_parameter = @sprintf "ic=%.2f_%.2f" init_cond[1] init_cond[2]
