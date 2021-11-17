@@ -29,7 +29,40 @@ function ODE_2D_system!(dX, X, p, t)
         y * (10.0 * exp(-0.01 * x^2) - y) * (y - 1.0)
     )
 end
+end
 
+
+"""
+Module for output & plot results
+"""
+module Output
+using Plots
+using Printf
+
+"""
+Save timeseries in .d file
+"""
+function save_timeseries(
+    filename, sol
+)
+
+    full_filename = (
+        "result/"
+        * filename
+        * ".d"
+    )
+
+    open(full_filename, "w") do f
+        for itr = 1:length(sol.t)
+            println(
+                f,
+                @sprintf "%.3e %.5e %.5e" sol.t[itr] sol[1, itr] sol[2, itr]  # t, x, y
+            )
+        end
+    end
+    println("Save: ", full_filename)
+
+end
 end
 
 
@@ -38,6 +71,7 @@ using DifferentialEquations
 using Statistics
 using Random
 using .ODE: ODE_2D_system!
+using .Output: save_timeseries
 
 # ========================================
 # Main function
@@ -47,7 +81,7 @@ function main()
     # Set initial condition for x and y
     init_cond = [5.0; 5.0]
     # Set time range to compute
-    t_span = (0.0, 1000.0)
+    t_span = (0.0, 100.0)
 
     # Prepare result/ directory if not present
     try
@@ -76,17 +110,8 @@ function main()
     sol = solve(prob, arg, adaptive = false, dt = 0.01)
 
     # Save result of the problem
-    filename = "2dsystem_" * filename_parameter * ".d"
-
-    open(filename, "w") do f
-        for itr = 1:length(sol.t)
-            println(
-                f,
-                @sprintf "%.3e %.5e %.5e" sol.t[itr] sol[1, itr] sol[2, itr]  # t, x, y
-            )
-        end
-    end
-    println("Save: ", filename)
+    filename = "2dsystem_" * filename_parameter
+    save_timeseries(filename, sol)
 
 end
 
