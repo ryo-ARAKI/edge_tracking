@@ -66,10 +66,10 @@ end
 end
 
 
-using Printf
 using DifferentialEquations
-using Statistics
-using Random
+using Printf
+using LaTeXStrings
+using PyPlot
 using .ODE: ODE_2D_system!
 using .Output: save_timeseries
 
@@ -91,6 +91,11 @@ function main()
     catch
         println(pwd(), "/result/ directory already exists.\n")
     end
+
+    # Set up plot configurations
+    fig, ax = subplots()
+    ax.set_xlabel(L"x")
+    ax.set_ylabel(L"y")
 
     # Stdout problem information
     println(
@@ -119,7 +124,19 @@ function main()
         # Save result of the problem
         filename = "2dsystem_" * filename_parameter
         save_timeseries(filename, sol)
+
+        # Plot result
+        ax.plot(
+            sol[1, :], sol[2, :],  # x, y
+            color = "Navy",
+            zorder = 1
+        )
     end
+
+    # Save figure
+    filename_figure = "result/" * "2dsystem.png"
+    savefig(filename_figure)
+    println("Save: ", filename_figure)
 
 end
 
