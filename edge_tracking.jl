@@ -78,8 +78,11 @@ using .Output: save_timeseries
 # ========================================
 function main()
 
-    # Set initial condition for x and y
-    init_cond = [5.0; 5.0]
+    # Set list of initial condition for x and y
+    init_cond_list = [
+        5.0 1.0;  # x
+        5.0 2.0   # y
+    ]
     # Set time range to compute
     t_span = (0.0, 100.0)
 
@@ -99,19 +102,26 @@ function main()
     )
     println("Time range: ", t_span)
 
-    # Set up strings
-    filename_parameter = @sprintf "ic=%.2f_%.2f" init_cond[1] init_cond[2]
+    # Iteration over initial condition
+    for itr = 1:length(init_cond_list[1, :])
 
-    # Set up the problem
-    prob = ODEProblem(ODE_2D_system!, init_cond, t_span)
+        # Set initial condition
+        init_cond = init_cond_list[:, itr]
 
-    # Solve the problem
-    arg = RK4()
-    sol = solve(prob, arg, adaptive = false, dt = 0.01)
+        # Set up strings
+        filename_parameter = @sprintf "ic=%.2f_%.2f" init_cond[1] init_cond[2]
 
-    # Save result of the problem
-    filename = "2dsystem_" * filename_parameter
-    save_timeseries(filename, sol)
+        # Set up the problem
+        prob = ODEProblem(ODE_2D_system!, init_cond, t_span)
+
+        # Solve the problem
+        arg = RK4()
+        sol = solve(prob, arg, adaptive = false, dt = 0.01)
+
+        # Save result of the problem
+        filename = "2dsystem_" * filename_parameter
+        save_timeseries(filename, sol)
+    end
 
 end
 
